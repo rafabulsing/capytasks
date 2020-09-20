@@ -1,2 +1,4 @@
 node_modules
 release
+.vscode
+database.json
