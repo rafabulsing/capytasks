@@ -1,0 +1,7 @@
+* {
+    font-family: 'Karla', sans-serif;
+}
+
+.completed {
+    text-decoration: line-through;
+}

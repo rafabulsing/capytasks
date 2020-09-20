@@ -1,0 +1,20 @@
+[
+    {
+        "id": "9b65d76e-2b6f-4bd6-89ce-8a53c22b75ca",
+        "title": "Do the dishes",
+        "completed": false,
+        "dueDate": "Today"
+    },
+    {
+        "id": "d033186b-6e8c-494c-894d-9d351160d62f",
+        "title": "Clean my room",
+        "completed": true,
+        "dueDate": "Today"
+    },
+    {
+        "id": "f4f72f17-7e14-443b-9684-724b60b36b65",
+        "title": "Mow the lawn",
+        "completed": false,
+        "dueDate": "Monday"
+    }
+]
