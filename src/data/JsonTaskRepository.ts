@@ -11,12 +11,21 @@ export class JsonTaskRepository implements ITaskRepository {
     async loadTasks(): Promise<Task[]> {
         const jsonTasks = await readJson(this.filepath);
         const tasks = jsonTasks.map((jsonTask: any) => {
-            return new Task(jsonTask); 
-        })
+            return this.jsonToTask(jsonTask);
+        });
         return tasks;
     }
 
     async saveTasks(tasks: Task[]): Promise<void> {
         await writeJson(this.filepath, tasks);
+    }
+
+    jsonToTask(obj: any): Task {
+        return new Task({
+            id: obj.id,
+            title: obj.title,
+            dueDate: new Date(obj.dueDate),
+            completed: obj.completed,
+        });
     }
 };
