@@ -37,10 +37,6 @@ gulp.task('public', () => {
 
 gulp.task('build', gulp.parallel('typescript', 'browserify', 'public'));
 
-gulp.task('watch', () => {
-    return gulp.watch('src/**/*', { ignoreInitial: false }, gulp.series('build', 'start'));
-});
-
 let child;
 
 gulp.task('start', (cb) => {
@@ -51,4 +47,6 @@ gulp.task('start', (cb) => {
     cb();
 });
 
-// gulp.task('default', ['watch']);
+gulp.task('watch', () => {
+    return gulp.watch('src/**/*', { ignoreInitial: false }, gulp.series('build', 'start'));
+});
