@@ -1,9 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import path from "path";
+import path from 'path';
+import { v4 as uuid } from 'uuid';
 
 import { TaskService } from './core/TaskService';
 import { JsonTaskRepository } from './data/JsonTaskRepository';
+import { Task } from './core/Task';
 
 const app = express();
 const jsonParser = bodyParser.json();
@@ -24,6 +26,17 @@ app.use(express.static(publicPath));
 app.get('/tasks', async (req, res) => {
 	const tasks = await taskService.getTasks();
 	return res.status(200).send(tasks);
+});
+
+app.post('/task', jsonParser, async (req, res) => {
+    const task = new Task({
+        title: req.body.title,
+        dueDate: new Date(req.body.dueDate),
+        completed: false,
+        id: uuid(),
+    });
+    await taskService.createTask(task);
+	return res.status(200).send('a');
 });
 
 app.patch('/task/:taskId', jsonParser, async (req, res) => {

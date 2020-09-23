@@ -1,5 +1,6 @@
 const formatRelative = require('date-fns/formatRelative');
 const parseJSON = require('date-fns/parseJSON');
+const parseISO = require('date-fns/parseISO');
 
 const completeTask = (taskRow, checkbox) => {
     const xhr = new XMLHttpRequest();
@@ -58,4 +59,34 @@ const createTaskRow = (task) => {
             </tr>`;
 };
 
+const createTask = (title, dueDate) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/task', true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    
+    xhr.addEventListener('load', () => {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            loadTasks();
+        }
+    });
+
+    const body = JSON.stringify({
+        title,
+        dueDate,
+    });
+    console.log(body);
+    xhr.send(body);
+}
+
+const createTaskHandler = () => {
+    const createTaskBtn = document.getElementById('createTaskBtn');
+    createTaskBtn.addEventListener("click", () => {
+        const newTaskTitle = document.getElementById('newTaskTitle').value;
+        const newTaskDueDate = document.getElementById('newTaskDueDate').value;
+        createTask(newTaskTitle, parseISO(newTaskDueDate));
+    }, true);
+}
+
 loadTasks();
+createTaskHandler();
+
