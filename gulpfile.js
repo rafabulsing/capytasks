@@ -9,6 +9,8 @@ const browserify = require('browserify');
 
 const tsProject = ts.createProject('tsconfig.json');
 
+const spawn = require('child_process').spawn;
+
 gulp.task('typescript', () => {
     return gulp.src('src/**/*.ts', { since: gulp.lastRun('typescript') })
         .pipe(tsProject())
@@ -36,7 +38,17 @@ gulp.task('public', () => {
 gulp.task('build', gulp.parallel('typescript', 'browserify', 'public'));
 
 gulp.task('watch', () => {
-    return gulp.watch('src/**/*', gulp.series('build'));
+    return gulp.watch('src/**/*', { ignoreInitial: false }, gulp.series('build', 'start'));
+});
+
+let child;
+
+gulp.task('start', (cb) => {
+    if (child) {
+        child.kill();
+    }
+    child = spawn('node', ['release/server.js'], { stdio: 'inherit' });
+    cb();
 });
 
 // gulp.task('default', ['watch']);
