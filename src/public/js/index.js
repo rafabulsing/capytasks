@@ -2,48 +2,26 @@ const formatRelative = require('date-fns/formatRelative');
 const parseJSON = require('date-fns/parseJSON');
 const parseISO = require('date-fns/parseISO');
 
-const completeTask = (taskRow, checkbox) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('PATCH', `/task/${ taskRow.id }`, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    
-    xhr.addEventListener('load', () => {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            console.log('Updated.');
-            taskRow.classList.toggle('completed');
-        }
-    });
-
-    const body = JSON.stringify({
-        completed: checkbox.checked,
-    });
-    xhr.send(body);
-}
+const taskRequests = require('./taskRequests');
 
 const addHandlers = () => {
     const taskRows = document.querySelectorAll('.taskRow');
     taskRows.forEach((taskRow) => {
         const checkbox = taskRow.querySelector('input');
         checkbox.addEventListener('change', () => {
-            completeTask(taskRow, checkbox); 
+            taskRequests.setTaskCompleted(taskRow.id, checkbox.checked, loadTasks); 
         });
         const deleteBtn = taskRow.querySelector('.deleteBtn');
         deleteBtn.addEventListener('click', () => {
-            deleteTask(taskRow.id);
+            taskRequests.deleteTask(taskRow.id, loadTasks);
         });
     });
 };
 
 const loadTasks = () => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'tasks', true);
-    xhr.addEventListener('load', () => {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            const tasks = JSON.parse(xhr.response);
-            showTasks(tasks);
-        }
+    taskRequests.getTasks((tasks) => {
+        showTasks(tasks);
     });
-    xhr.send();
 };
 
 const showTasks = (tasks) => {
@@ -64,45 +42,12 @@ const createTaskRow = (task) => {
             </tr>`;
 };
 
-const createTask = (title, dueDate) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/task', true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    
-    xhr.addEventListener('load', () => {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            loadTasks();
-        }
-    });
-
-    const body = JSON.stringify({
-        title,
-        dueDate,
-    });
-    console.log(body);
-    xhr.send(body);
-};
-
-const deleteTask = (id) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('DELETE', `/task/${ id }`, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    
-    xhr.addEventListener('load', () => {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            loadTasks();
-        }
-    });
-    
-    xhr.send();
-}
-
 const createTaskHandler = () => {
     const createTaskBtn = document.getElementById('createTaskBtn');
     createTaskBtn.addEventListener("click", () => {
         const newTaskTitle = document.getElementById('newTaskTitle').value;
         const newTaskDueDate = document.getElementById('newTaskDueDate').value;
-        createTask(newTaskTitle, parseISO(newTaskDueDate));
+        taskRequests.createTask(newTaskTitle, parseISO(newTaskDueDate), loadTasks);
     }, true);
 }
 

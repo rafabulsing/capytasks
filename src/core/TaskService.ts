@@ -13,7 +13,6 @@ export class TaskService {
     }
 
     async createTask(task: Task): Promise<void> {
-        console.log(task);
         const tasks = await this.repository.loadTasks();
         tasks.push(task);
         await this.repository.saveTasks(tasks);
