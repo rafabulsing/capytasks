@@ -37,12 +37,13 @@ const showTasks = (tasks) => {
 
 const createTaskRow = (task) => {
     const template = dedent`
-        tr(class="taskRow ${ task.completed ? 'completed' : '' }" id="${ task.id }")
-            td
+        div(class="taskRow ${ task.completed ? 'completed' : '' }" id="${ task.id }")
+            div
                 input(type="checkbox" ${ task.completed ? 'checked' : '' })
-            td ${ task.title }
-            td ${ formatRelative(parseJSON(task.dueDate), new Date()) }
-            td
+            div ${ task.title }
+            div
+            div ${ formatRelative(parseJSON(task.dueDate), new Date()) }
+            div
                 button(type="button" class="deleteBtn") ❌`;
     return pug.render(template);
 };

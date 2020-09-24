@@ -2,7 +2,32 @@
     font-family: 'Karla', sans-serif;
 }
 
+body {
+    width: 50%;
+    margin: auto;
+}
+
 .completed {
     color: gray;
     text-decoration: line-through;
+}
+
+.tasks-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#tasks {
+    display: flex;
+    flex-direction: column;
+}
+
+.taskRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.taskRow > *:nth-child(3) {
+    flex-grow: 10;
 }
