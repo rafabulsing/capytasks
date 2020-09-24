@@ -1,6 +1,8 @@
 const formatRelative = require('date-fns/formatRelative');
 const parseJSON = require('date-fns/parseJSON');
 const parseISO = require('date-fns/parseISO');
+const pug = require('pug');
+const dedent = require('dedent');
 
 const taskRequests = require('./taskRequests');
 
@@ -34,12 +36,15 @@ const showTasks = (tasks) => {
 };
 
 const createTaskRow = (task) => {
-    return `<tr class="taskRow ${ task.completed ? 'completed' : ''}" id="${ task.id }">
-                <td><input type="checkbox" ${ task.completed ? 'checked' : '' }></td>
-                <td>${ task.title }</td>
-                <td>${ formatRelative(parseJSON(task.dueDate), new Date()) }</td>
-                <td><button type="button" class="deleteBtn">❌</button></td>
-            </tr>`;
+    const template = dedent`
+        tr(class="taskRow ${ task.completed ? 'completed' : '' }" id="${ task.id }")
+            td
+                input(type="checkbox" ${ task.completed ? 'checked' : '' })
+            td ${ task.title }
+            td ${ formatRelative(parseJSON(task.dueDate), new Date()) }
+            td
+                button(type="button" class="deleteBtn") ❌`;
+    return pug.render(template);
 };
 
 const createTaskHandler = () => {
