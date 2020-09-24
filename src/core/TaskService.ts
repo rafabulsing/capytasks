@@ -42,4 +42,10 @@ export class TaskService {
             await this.repository.saveTasks(tasks);
         }
     }
+
+    async deleteTask(id: string) {
+        const tasks = await this.repository.loadTasks();
+        const filteredTasks = tasks.filter(task => task.id !== id);
+        await this.repository.saveTasks(filteredTasks);
+    }
 };

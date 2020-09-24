@@ -27,6 +27,10 @@ const addHandlers = () => {
         checkbox.addEventListener('change', () => {
             completeTask(taskRow, checkbox); 
         });
+        const deleteBtn = taskRow.querySelector('.deleteBtn');
+        deleteBtn.addEventListener('click', () => {
+            deleteTask(taskRow.id);
+        });
     });
 };
 
@@ -56,6 +60,7 @@ const createTaskRow = (task) => {
                 <td><input type="checkbox" ${ task.completed ? 'checked' : '' }></td>
                 <td>${ task.title }</td>
                 <td>${ formatRelative(parseJSON(task.dueDate), new Date()) }</td>
+                <td><button type="button" class="deleteBtn">❌</button></td>
             </tr>`;
 };
 
@@ -76,6 +81,20 @@ const createTask = (title, dueDate) => {
     });
     console.log(body);
     xhr.send(body);
+};
+
+const deleteTask = (id) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', `/task/${ id }`, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    
+    xhr.addEventListener('load', () => {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            loadTasks();
+        }
+    });
+    
+    xhr.send();
 }
 
 const createTaskHandler = () => {
