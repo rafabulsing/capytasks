@@ -18,33 +18,37 @@ export class TaskService {
         await this.repository.saveTasks(tasks);
     }
 
-    async completeTask(title: string): Promise<Task|Error> {
-        const tasks = await this.repository.loadTasks();
-        const index = tasks.findIndex(task => task.title === title);
-        if (index !== undefined) {
-            tasks[index].completed = true;
-            await this.repository.saveTasks(tasks);
-            return tasks[index];
-        } else {
-            return new Error('Task not found.');
-        }
-    }
-
     async updateTask(id: string, data: Partial<Task>) {
         const tasks = await this.repository.loadTasks();
-        const index = tasks.findIndex(task => task.id === id);
-        if (index !== undefined) {
-            tasks[index] = {
-                ...tasks[index],
-                ...data,
-            };
-            await this.repository.saveTasks(tasks);
-        }
+        this.changeTask(tasks, data, task => task.id === id);
+        await this.repository.saveTasks(tasks);
     }
 
     async deleteTask(id: string) {
         const tasks = await this.repository.loadTasks();
         const filteredTasks = tasks.filter(task => task.id !== id);
         await this.repository.saveTasks(filteredTasks);
+    }
+    
+    findTask(tasks: Task[], predicate: (task: Task) => boolean): Task | undefined {
+        return tasks.find(task => {
+            return predicate(task)
+                ? task
+                : this.findTask(task.children, predicate);
+        });
+    }
+
+    async getTask(id: string) {
+        const tasks = await this.repository.loadTasks();
+        return this.findTask(tasks, (task => task.id === id));
+    }
+
+    changeTask(tasks: Task[], data: Partial<Task>, predicate: (task: Task) => boolean): void {
+        tasks.forEach(task => {
+            if (predicate(task)) {
+                (Object.keys(data) as Array<keyof typeof data>).forEach(key => (task[key] as any) = data[key]);
+            }
+            this.changeTask(task.children, data, predicate);
+        });
     }
 };

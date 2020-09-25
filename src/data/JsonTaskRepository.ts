@@ -20,12 +20,21 @@ export class JsonTaskRepository implements ITaskRepository {
         await writeJson(this.filepath, tasks);
     }
 
-    jsonToTask(obj: any): Task {
+    jsonToTask(obj: jsonTask): Task {
         return new Task({
             id: obj.id,
             title: obj.title,
             dueDate: new Date(obj.dueDate),
             completed: obj.completed,
+            children: obj.children.map(child => this.jsonToTask(child)),
         });
     }
+};
+
+interface jsonTask {
+    id: string,
+    title: string,
+    dueDate: string,
+    completed: boolean,
+    children: jsonTask[],
 };

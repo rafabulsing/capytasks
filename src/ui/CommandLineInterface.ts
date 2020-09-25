@@ -16,18 +16,6 @@ program
     })
 ;
 
-program.command('complete <title>')
-    .description('Complete existing task')
-    .action(async (name) => {
-        const result = await taskService.completeTask(name);
-        if (result instanceof Error) {
-            console.log('Error: ', result.message);
-            return;
-        }
-        console.log('Task completed.', result);
-    })
-;
-
 program.command('list')
     .description('Lists all tasks')
     .action(async () => {

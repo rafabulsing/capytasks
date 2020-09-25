@@ -28,14 +28,12 @@ const loadTasks = () => {
 
 const showTasks = (tasks) => {
     const tasksTable = document.querySelector('#tasks');
-    const html = tasks
-        .map((task) => createTaskRow(task))
-        .reduce((html, taskHtml) => html + taskHtml);
+    const html = createTaskRow(tasks[0], tasks);
     tasksTable.innerHTML = html;
     addHandlers();
 };
 
-const createTaskRow = (task) => {
+const createTaskRow = (task, tasks) => {
     const template = dedent`
         div(class="taskRow ${ task.completed ? 'completed' : '' }" id="${ task.id }")
             div
@@ -44,7 +42,11 @@ const createTaskRow = (task) => {
             div
             div ${ formatRelative(parseJSON(task.dueDate), new Date()) }
             div
-                button(type="button" class="deleteBtn") ❌`;
+                button(type="button" class="deleteBtn") ❌
+        div(class="subtasks")
+            ${ task.children
+                .map(child => createTaskRow(child, tasks))
+                .reduce((html, taskHtml) => html + taskHtml, '')}`;
     return pug.render(template);
 };
 

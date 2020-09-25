@@ -36,7 +36,7 @@ app.post('/task', jsonParser, async (req, res) => {
         id: uuid(),
     });
     await taskService.createTask(task);
-	return res.status(200).send('a');
+	return res.status(200).send();
 });
 
 app.patch('/task/:taskId', jsonParser, async (req, res) => {

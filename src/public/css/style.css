@@ -12,12 +12,6 @@ body {
     text-decoration: line-through;
 }
 
-.tasks-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
 #tasks {
     display: flex;
     flex-direction: column;
@@ -30,4 +24,8 @@ body {
 
 .taskRow > *:nth-child(3) {
     flex-grow: 10;
+}
+
+.subtasks {
+    margin-left: 30px;
 }
