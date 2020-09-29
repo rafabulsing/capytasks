@@ -28,7 +28,7 @@ const loadTasks = () => {
 
 const showTasks = (tasks) => {
     const tasksTable = document.querySelector('#tasks');
-    const html = createTaskRow(tasks[0], tasks);
+    const html = tasks.reduce((html, task) => html + createTaskRow(task), '');
     tasksTable.innerHTML = html;
     addHandlers();
 };
