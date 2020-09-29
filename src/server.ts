@@ -24,7 +24,7 @@ const publicPath = path.join(__dirname, 'public');
 app.use(express.static(publicPath));
 
 app.get('/tasks', async (req, res) => {
-	const tasks = await taskService.getTasks();
+    const tasks = await taskService.getTasks();
 	return res.status(200).send(tasks);
 });
 
@@ -33,7 +33,6 @@ app.post('/task', jsonParser, async (req, res) => {
         title: req.body.title,
         dueDate: new Date(req.body.dueDate),
         completed: false,
-        id: uuid(),
     });
     await taskService.createTask(task);
 	return res.status(200).send();

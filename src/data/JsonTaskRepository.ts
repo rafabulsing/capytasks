@@ -1,5 +1,6 @@
 import { ITaskRepository } from '../core/ITaskRepository';
 import { Task } from '../core/Task';
+import { TaskCollection } from '../core/TaskCollection';
 import { readJson, writeJson } from '../util/files';
 
 export class JsonTaskRepository implements ITaskRepository {
@@ -8,16 +9,13 @@ export class JsonTaskRepository implements ITaskRepository {
         this.filepath = filepath;
     }
 
-    async loadTasks(): Promise<Task[]> {
+    async loadTasks(): Promise<TaskCollection> {
         const jsonTasks = await readJson(this.filepath);
-        const tasks = jsonTasks.map((jsonTask: any) => {
-            return this.jsonToTask(jsonTask);
-        });
-        return tasks;
+        return this.jsonToTaskCollection(jsonTasks);
     }
 
-    async saveTasks(tasks: Task[]): Promise<void> {
-        await writeJson(this.filepath, tasks);
+    async saveTasks(tasks: TaskCollection): Promise<void> {
+        await writeJson(this.filepath, Object.values(tasks));
     }
 
     jsonToTask(obj: jsonTask): Task {
@@ -26,8 +24,13 @@ export class JsonTaskRepository implements ITaskRepository {
             title: obj.title,
             dueDate: new Date(obj.dueDate),
             completed: obj.completed,
-            children: obj.children.map(child => this.jsonToTask(child)),
+            parent: obj.parent,
+            children: obj.children,
         });
+    }
+
+    jsonToTaskCollection(jsonTasks: jsonTask[]): TaskCollection {
+        return new TaskCollection(jsonTasks.map(jsonTask => this.jsonToTask(jsonTask)))
     }
 };
 
@@ -36,5 +39,6 @@ interface jsonTask {
     title: string,
     dueDate: string,
     completed: boolean,
-    children: jsonTask[],
-};
+    parent: string,
+    children: string[],
+}

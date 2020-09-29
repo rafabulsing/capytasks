@@ -5,7 +5,8 @@ export class Task {
     title: string;
     completed: boolean;
     dueDate?: Date;
-    children: Task[];
+    children: string[];
+    parent: string | null;
 
     constructor(options: Partial<Task>) {
         this.id = options.id || uuid();
@@ -13,5 +14,6 @@ export class Task {
         this.completed = options.completed || false;
         this.dueDate = options.dueDate;
         this.children = options.children || [];
+        this.parent = options.parent || null;
     }
 };
