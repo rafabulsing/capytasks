@@ -1,5 +1,5 @@
 import { ITaskRepository } from '../core/ITaskRepository';
-import { Task, SpecialDueDate } from '../core/Task';
+import { Task, SpecialValues } from '../core/Task';
 import { TaskCollection } from '../core/TaskCollection';
 import { readJson, writeJson } from '../util/files';
 
@@ -23,18 +23,27 @@ export class JsonTaskRepository implements ITaskRepository {
             id: jsonTask.id,
             title: jsonTask.title,
             dueDate: this.jsonToDate(jsonTask.dueDate),
+            recurrence: this.jsonToRecurrence(jsonTask.recurrence),
             completed: jsonTask.completed,
             parent: jsonTask.parent,
             children: jsonTask.children,
         });
     }
 
-    jsonToDate(jsonDate: string): Date | SpecialDueDate {
-        if (Object.values(SpecialDueDate).includes(jsonDate as SpecialDueDate)) {
-            return jsonDate as SpecialDueDate;
+    jsonToDate(jsonDate: string): Date | SpecialValues {
+        if (Object.values(SpecialValues).includes(jsonDate as SpecialValues)) {
+            return jsonDate as SpecialValues;
         };
 
         return new Date(jsonDate);
+    }
+
+    jsonToRecurrence(jsonRecurrence: number | string): number | SpecialValues {
+        if (typeof jsonRecurrence === 'number') {
+            return jsonRecurrence as number;
+        }
+
+        return jsonRecurrence as SpecialValues;
     }
 
     jsonToTaskCollection(jsonTasks: JsonTask[]): TaskCollection {
@@ -46,6 +55,7 @@ interface JsonTask {
     id: string,
     title: string,
     dueDate: string,
+    recurrence: string | number,
     completed: boolean,
     parent: string,
     children: string[],

@@ -22,6 +22,10 @@ body {
     flex-direction: row;
 }
 
+.taskRow > * {
+    margin-left: 10px;
+}
+
 .taskRow > *:nth-child(3) {
     flex-grow: 10;
 }

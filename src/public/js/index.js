@@ -45,6 +45,7 @@ const createTaskRow = (task, tasks) => {
             div ${ task.title }
             div
             div ${ special.includes(task.dueDate) ? task.dueDate : formatRelative(parseJSON(task.dueDate), new Date()) }
+            div ${ task.recurrence }
             div
                 button(type="button" class="deleteBtn") ❌
         div(class="subtasks")
