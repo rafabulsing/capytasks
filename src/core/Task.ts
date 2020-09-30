@@ -1,10 +1,14 @@
 import { v4 as uuid } from 'uuid';
 
+export enum SpecialDueDate {
+    Inherit = 'Inherit',
+}
+
 export class Task {
     id: string;
     title: string;
     completed: boolean;
-    dueDate?: Date;
+    dueDate?: Date | SpecialDueDate;
     children: string[];
     parent: string | null;
 
@@ -16,4 +20,4 @@ export class Task {
         this.children = options.children || [];
         this.parent = options.parent || null;
     }
-};
+}

@@ -37,13 +37,14 @@ const showTasks = (tasks) => {
 };
 
 const createTaskRow = (task, tasks) => {
+    const special = ['Inherit'];
     const template = dedent`
         div(class="taskRow ${ task.completed ? 'completed' : '' }" id="${ task.id }")
             div
                 input(type="checkbox" ${ task.completed ? 'checked' : '' })
             div ${ task.title }
             div
-            div ${ formatRelative(parseJSON(task.dueDate), new Date()) }
+            div ${ special.includes(task.dueDate) ? task.dueDate : formatRelative(parseJSON(task.dueDate), new Date()) }
             div
                 button(type="button" class="deleteBtn") ❌
         div(class="subtasks")
