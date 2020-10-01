@@ -3,6 +3,9 @@
 ## Todo
 
 - Tree:
+  - Create task
+  - Update task
+  - Delete task
   - Add task with a specific parent
   - Change task's parent
 

@@ -29,8 +29,7 @@ const loadTasks = () => {
 const showTasks = (tasks) => {
     const tasksTable = document.querySelector('#tasks');
     const html =
-        Object.values(tasks)
-        .filter(task => task.parent === null)
+        tasks.children
         .reduce((html, task) => html + createTaskRow(task, tasks), '');
     tasksTable.innerHTML = html;
     addHandlers();
@@ -50,7 +49,7 @@ const createTaskRow = (task, tasks) => {
                 button(type="button" class="deleteBtn") ❌
         div(class="subtasks")
             ${ task.children
-                .map(childId => createTaskRow(tasks[childId], tasks))
+                .map(child => createTaskRow(child, tasks))
                 .reduce((html, taskHtml) => html + taskHtml, '')}`;
     return pug.render(template);
 };

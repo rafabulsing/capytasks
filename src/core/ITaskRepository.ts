@@ -1,6 +1,8 @@
-import { TaskCollection } from './TaskCollection';
+import { Task } from './Task';
 
 export interface ITaskRepository {
-    loadTasks(): Promise<TaskCollection>;
-    saveTasks(tasks: TaskCollection): Promise<void>;
+    // createTask(task: Task): Promise<void>;
+    readTask(path: string[]): Promise<Task>;
+    // updateTask(path: string[], data: Partial<Task>): Promise<void>;
+    // delete(path: string[]): Promise<void>;
 };

@@ -28,30 +28,30 @@ app.get('/tasks', async (req, res) => {
 	return res.status(200).send(tasks);
 });
 
-app.post('/task', jsonParser, async (req, res) => {
-    const task = new Task({
-        title: req.body.title,
-        dueDate: new Date(req.body.dueDate),
-        completed: false,
-    });
-    await taskService.createTask(task);
-	return res.status(200).send();
-});
+// app.post('/task', jsonParser, async (req, res) => {
+//     const task = new Task({
+//         title: req.body.title,
+//         dueDate: new Date(req.body.dueDate),
+//         completed: false,
+//     });
+//     await taskService.createTask(task);
+// 	return res.status(200).send();
+// });
 
-app.patch('/task/:taskId', jsonParser, async (req, res) => {
-    const taskId = req.params.taskId;
-    const data = {
-        ...req.body,
-    }
-    await taskService.updateTask(taskId, data);
-    return res.status(200).send('Task updated.');
-});
+// app.patch('/task/:taskId', jsonParser, async (req, res) => {
+//     const taskId = req.params.taskId;
+//     const data = {
+//         ...req.body,
+//     }
+//     await taskService.updateTask(taskId, data);
+//     return res.status(200).send('Task updated.');
+// });
 
-app.delete('/task/:taskId', async (req, res) => {
-    const taskId = req.params.taskId;
-    await taskService.deleteTask(taskId);
-    return res.status(200).send('Task deleted.');
-});
+// app.delete('/task/:taskId', async (req, res) => {
+//     const taskId = req.params.taskId;
+//     await taskService.deleteTask(taskId);
+//     return res.status(200).send('Task deleted.');
+// });
 
 app.get('*', (req, res, next) => {
 	res.status(200).send('Sorry, requested page not found.');

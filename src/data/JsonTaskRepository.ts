@@ -9,24 +9,48 @@ export class JsonTaskRepository implements ITaskRepository {
         this.filepath = filepath;
     }
 
-    async loadTasks(): Promise<TaskCollection> {
-        const jsonTasks = await readJson(this.filepath);
-        return this.jsonToTaskCollection(jsonTasks);
+    async loadTasks(): Promise<Task> {
+        const jsonTask = (await readJson(this.filepath));
+        return this.jsonToTask(jsonTask);
     }
 
-    async saveTasks(tasks: TaskCollection): Promise<void> {
+    async saveTasks(tasks: Task): Promise<void> {
         await writeJson(this.filepath, Object.values(tasks));
     }
+
+    async readTask(path: string[]): Promise<Task> {
+        const root = await this.loadTasks();
+        let task = root;
+        path.forEach(id => {
+            const result = task.children.find(child => child.id === id);
+            if (!result) {
+                throw new Error('Task not found. ' + path);
+            }
+            task = result;
+        });
+        return task;
+    }
+
+    // async updateTask(path: string[]): Promise<void> {
+    //     const root = await this.loadTasks();
+    //     path.forEach(id => {
+    //         const result = task.children.find(child => child.id === id);
+    //         if (!result) {
+    //             throw new Error('Task not found. ' + path);
+    //         }
+    //         task = result;
+    //     });
+    // }
 
     jsonToTask(jsonTask: JsonTask): Task {
         return new Task({
             id: jsonTask.id,
+            path: jsonTask.path,
             title: jsonTask.title,
             dueDate: this.jsonToDate(jsonTask.dueDate),
             recurrence: this.jsonToRecurrence(jsonTask.recurrence),
             completed: jsonTask.completed,
-            parent: jsonTask.parent,
-            children: jsonTask.children,
+            children: jsonTask.children.map(jsonChild => this.jsonToTask(jsonChild)),
         });
     }
 
@@ -45,18 +69,15 @@ export class JsonTaskRepository implements ITaskRepository {
 
         return jsonRecurrence as SpecialValues;
     }
-
-    jsonToTaskCollection(jsonTasks: JsonTask[]): TaskCollection {
-        return new TaskCollection(jsonTasks.map(jsonTask => this.jsonToTask(jsonTask)))
-    }
 };
 
 interface JsonTask {
     id: string,
+    path: string[],
     title: string,
     dueDate: string,
     recurrence: string | number,
     completed: boolean,
     parent: string,
-    children: string[],
+    children: JsonTask[],
 }
