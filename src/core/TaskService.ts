@@ -13,6 +13,10 @@ export class TaskService {
         return await this.repository.readTask([]); 
     }
 
+    async updateTask(path: string[], data: Partial<Task>) {
+        return await this.repository.updateTask(path, data);
+    }
+
     // async createTask(task: Task): Promise<void> {
     //     const tasks = await this.repository.loadTasks();
     //     tasks[task.id] = task;

@@ -11,7 +11,8 @@ const addHandlers = () => {
     taskRows.forEach((taskRow) => {
         const checkbox = taskRow.querySelector('input');
         checkbox.addEventListener('change', () => {
-            taskRequests.setTaskCompleted(taskRow.id, checkbox.checked, loadTasks); 
+            const path = taskRow.attributes.path.nodeValue;
+            taskRequests.setTaskCompleted(path, checkbox.checked, loadTasks); 
         });
         const deleteBtn = taskRow.querySelector('.deleteBtn');
         deleteBtn.addEventListener('click', () => {
@@ -38,7 +39,7 @@ const showTasks = (tasks) => {
 const createTaskRow = (task, tasks) => {
     const special = ['Inherit'];
     const template = dedent`
-        div(class="taskRow ${ task.completed ? 'completed' : '' }" id="${ task.id }")
+        div(class="taskRow ${ task.completed ? 'completed' : '' }" path="${ task.path.join('/') }")
             div
                 input(type="checkbox" ${ task.completed ? 'checked' : '' })
             div ${ task.title }

@@ -38,14 +38,14 @@ app.get('/tasks', async (req, res) => {
 // 	return res.status(200).send();
 // });
 
-// app.patch('/task/:taskId', jsonParser, async (req, res) => {
-//     const taskId = req.params.taskId;
-//     const data = {
-//         ...req.body,
-//     }
-//     await taskService.updateTask(taskId, data);
-//     return res.status(200).send('Task updated.');
-// });
+app.patch('/task/*', jsonParser, async (req, res) => {
+    const path = req.params[0].split('/');
+    const data = {
+        ...req.body,
+    }
+    await taskService.updateTask(path, data);
+    return res.status(200).send('Task updated.');
+});
 
 // app.delete('/task/:taskId', async (req, res) => {
 //     const taskId = req.params.taskId;

@@ -1,7 +1,7 @@
-const setTaskCompleted = (id, completed, callback) => {
+const setTaskCompleted = (path, completed, callback) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('PATCH', `/task/${ id }`, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.open('PATCH', `/task/${ path }`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
     
     xhr.addEventListener('load', () => {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
@@ -30,7 +30,7 @@ const getTasks = (callback) => {
 const createTask = (title, dueDate, callback) => {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/task', true);
-    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader('Content-Type', 'application/json');
     
     xhr.addEventListener('load', () => {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
@@ -48,7 +48,7 @@ const createTask = (title, dueDate, callback) => {
 const deleteTask = (id, callback) => {
     const xhr = new XMLHttpRequest();
     xhr.open('DELETE', `/task/${ id }`, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader('Content-Type', 'application/json');
     
     xhr.addEventListener('load', () => {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {

@@ -15,7 +15,7 @@ export class JsonTaskRepository implements ITaskRepository {
     }
 
     async saveTasks(tasks: Task): Promise<void> {
-        await writeJson(this.filepath, Object.values(tasks));
+        await writeJson(this.filepath, tasks);
     }
 
     async readTask(path: string[]): Promise<Task> {
@@ -31,16 +31,19 @@ export class JsonTaskRepository implements ITaskRepository {
         return task;
     }
 
-    // async updateTask(path: string[]): Promise<void> {
-    //     const root = await this.loadTasks();
-    //     path.forEach(id => {
-    //         const result = task.children.find(child => child.id === id);
-    //         if (!result) {
-    //             throw new Error('Task not found. ' + path);
-    //         }
-    //         task = result;
-    //     });
-    // }
+    async updateTask(path: string[], data: Partial<Task>): Promise<void> {
+        const root = await this.loadTasks();
+        let task = root;
+        path.forEach(id => {
+            const result = task.children.find(child => child.id === id);
+            if (!result) {
+                throw new Error('Task not found. ' + path);
+            }
+            task = result;
+        });
+        (Object.keys(data) as Array<keyof Task>).forEach(key => (task[key] as any) = data[key]);
+        await this.saveTasks(root);
+    }
 
     jsonToTask(jsonTask: JsonTask): Task {
         return new Task({
