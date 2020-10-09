@@ -1,3 +1,4 @@
+import { option } from 'commander';
 import { v4 as uuid } from 'uuid';
 
 export enum SpecialValues {
@@ -5,7 +6,6 @@ export enum SpecialValues {
 }
 
 export class Task {
-    id: string;
     path: string[];
     title: string;
     completed: boolean;
@@ -14,12 +14,15 @@ export class Task {
     children: Task[];
 
     constructor(options: Partial<Task>) {
-        this.id = options.id || uuid();
-        this.path = options.path || [this.id];
+        this.path = options.path || [];
         this.title = options.title || '';
         this.completed = options.completed || false;
         this.dueDate = options.dueDate;
         this.recurrence = options.recurrence || SpecialValues.Inherit;
         this.children = options.children || [];
+    }
+
+    get id(): string {
+        return this.path[this.path.length - 1];
     }
 }

@@ -47,7 +47,6 @@ export class JsonTaskRepository implements ITaskRepository {
 
     jsonToTask(jsonTask: JsonTask): Task {
         return new Task({
-            id: jsonTask.id,
             path: jsonTask.path,
             title: jsonTask.title,
             dueDate: this.jsonToDate(jsonTask.dueDate),
@@ -75,7 +74,6 @@ export class JsonTaskRepository implements ITaskRepository {
 };
 
 interface JsonTask {
-    id: string,
     path: string[],
     title: string,
     dueDate: string,
