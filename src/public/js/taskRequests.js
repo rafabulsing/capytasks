@@ -39,8 +39,11 @@ const createTask = (title, dueDate, callback) => {
     });
 
     const body = JSON.stringify({
-        title,
-        dueDate,
+        parentPath: [],
+        taskProperties: {
+            title,
+            dueDate,
+        }
     });
     xhr.send(body);
 };

@@ -1,6 +1,5 @@
 import { ITaskRepository } from '../core/ITaskRepository';
 import { Task, SpecialValues } from '../core/Task';
-import { TaskCollection } from '../core/TaskCollection';
 import { readJson, writeJson } from '../util/files';
 
 export class JsonTaskRepository implements ITaskRepository {
@@ -42,6 +41,21 @@ export class JsonTaskRepository implements ITaskRepository {
             task = result;
         });
         (Object.keys(data) as Array<keyof Task>).forEach(key => (task[key] as any) = data[key]);
+        await this.saveTasks(root);
+    }
+
+    async createTask(task: Task): Promise<void> {
+        const parentPath = task.path.slice(0, -1);
+        const root = await this.loadTasks();
+        let currentTask = root;
+        parentPath.forEach(id => {
+            const result = currentTask.children.find(child => child.id === id);
+            if (!result) {
+                throw new Error('Task not found. ' + parentPath);
+            }
+            currentTask = result;
+        });
+        currentTask.children.push(task);
         await this.saveTasks(root);
     }
 

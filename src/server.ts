@@ -28,15 +28,11 @@ app.get('/tasks', async (req, res) => {
 	return res.status(200).send(tasks);
 });
 
-// app.post('/task', jsonParser, async (req, res) => {
-//     const task = new Task({
-//         title: req.body.title,
-//         dueDate: new Date(req.body.dueDate),
-//         completed: false,
-//     });
-//     await taskService.createTask(task);
-// 	return res.status(200).send();
-// });
+app.post('/task', jsonParser, async (req, res) => {
+    const { parentPath, taskProperties } = req.body;
+    await taskService.createTask(parentPath, taskProperties);
+	return res.status(200).send();
+});
 
 app.patch('/task/*', jsonParser, async (req, res) => {
     const path = req.params[0].split('/');

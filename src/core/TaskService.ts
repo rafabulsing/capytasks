@@ -1,5 +1,5 @@
 import { Task } from './Task';
-import { TaskCollection } from './TaskCollection'
+import { v4 as uuid } from 'uuid';
 import { ITaskRepository } from './ITaskRepository';
 
 export class TaskService {
@@ -17,11 +17,13 @@ export class TaskService {
         return await this.repository.updateTask(path, data);
     }
 
-    // async createTask(task: Task): Promise<void> {
-    //     const tasks = await this.repository.loadTasks();
-    //     tasks[task.id] = task;
-    //     await this.repository.saveTasks(tasks);
-    // }
+    async createTask(parentPath: string[], data: Partial<Task>): Promise<void> {
+        const task = new Task({
+            ...data,
+            path: [...parentPath, uuid()],
+        });
+        await this.repository.createTask(task);
+    }
 
     // async updateTask(id: string, data: Partial<Task>) {
     //     const tasks = await this.repository.loadTasks();
