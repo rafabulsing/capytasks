@@ -38,11 +38,9 @@ export class TaskService {
     //     await this.repository.saveTasks(tasks);
     // }
 
-    // async deleteTask(id: string) {
-    //     const tasks = await this.repository.loadTasks();
-    //     delete tasks[id];
-    //     await this.repository.saveTasks(tasks);
-    // }
+    async deleteTask(path: string[]) {
+        await this.repository.deleteTask(path);
+    }
 
     // async getTask(id: string) {
     //     const tasks = await this.repository.loadTasks();

@@ -48,9 +48,9 @@ const createTask = (title, dueDate, callback) => {
     xhr.send(body);
 };
 
-const deleteTask = (id, callback) => {
+const deleteTask = (path, callback) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('DELETE', `/task/${ id }`, true);
+    xhr.open('DELETE', `/task/${ path }`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     
     xhr.addEventListener('load', () => {

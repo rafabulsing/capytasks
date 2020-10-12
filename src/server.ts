@@ -43,11 +43,11 @@ app.patch('/task/*', jsonParser, async (req, res) => {
     return res.status(200).send('Task updated.');
 });
 
-// app.delete('/task/:taskId', async (req, res) => {
-//     const taskId = req.params.taskId;
-//     await taskService.deleteTask(taskId);
-//     return res.status(200).send('Task deleted.');
-// });
+app.delete('/task/*', async (req, res) => {
+    const path = req.params[0].split('/');
+    await taskService.deleteTask(path);
+    return res.status(200).send('Task deleted.');
+});
 
 app.get('*', (req, res, next) => {
 	res.status(200).send('Sorry, requested page not found.');

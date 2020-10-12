@@ -59,6 +59,21 @@ export class JsonTaskRepository implements ITaskRepository {
         await this.saveTasks(root);
     }
 
+    async deleteTask(path: string[]): Promise<void> {
+        const parentPath = path.slice(0, -1);
+        const root = await this.loadTasks();
+        let task = root;
+        parentPath.forEach(id => {
+            const result = task.children.find(child => child.id === id);
+            if (!result) {
+                throw new Error('Task not found. ' + path);
+            }
+            task = result;
+        });
+        task.children = task.children.filter(child => child.id !== path[path.length - 1]);
+        await this.saveTasks(root);
+    }
+
     jsonToTask(jsonTask: JsonTask): Task {
         return new Task({
             path: jsonTask.path,

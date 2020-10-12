@@ -16,7 +16,7 @@ const addHandlers = () => {
         });
         const deleteBtn = taskRow.querySelector('.deleteBtn');
         deleteBtn.addEventListener('click', () => {
-            taskRequests.deleteTask(taskRow.id, loadTasks);
+            taskRequests.deleteTask(taskRow.attributes.getNamedItem('data-path').value, loadTasks);
         });
     });
 };
@@ -39,7 +39,7 @@ const showTasks = (tasks) => {
 const createTaskRow = (task, tasks) => {
     const special = ['Inherit'];
     const template = dedent`
-        div(class="taskRow ${ task.completed ? 'completed' : '' }" path="${ task.path.join('/') }")
+        div(class="taskRow ${ task.completed ? 'completed' : '' }" data-path="${ task.path.join('/') }")
             div
                 input(type="checkbox" ${ task.completed ? 'checked' : '' })
             div ${ task.title }
