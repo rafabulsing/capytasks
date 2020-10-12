@@ -25,25 +25,7 @@ export class TaskService {
         await this.repository.createTask(task);
     }
 
-    // async updateTask(id: string, data: Partial<Task>) {
-    //     const tasks = await this.repository.loadTasks();
-    //     if (data.id && data.id !== id) {
-    //         throw new Error('Mismatch in ids.');
-    //     }
-    //     const task = tasks[id];
-    //     if (!task) {
-    //         throw new Error('Task not found.');
-    //     }
-    //     tasks[task.id] = { ...task, ...data };
-    //     await this.repository.saveTasks(tasks);
-    // }
-
     async deleteTask(path: string[]) {
         await this.repository.deleteTask(path);
     }
-
-    // async getTask(id: string) {
-    //     const tasks = await this.repository.loadTasks();
-    //     return tasks[id];
-    // }
 };
