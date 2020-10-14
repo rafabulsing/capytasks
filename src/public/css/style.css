@@ -17,19 +17,37 @@ body {
     flex-direction: column;
 }
 
-.taskRow {
+.taskRow > .properties {
     display: flex;
     flex-direction: row;
 }
 
-.taskRow > * {
+.taskRow > .properties > *:nth-child(3) {
+    flex-grow: 10;
+}
+
+.taskRow > .properties > * {
     margin-left: 10px;
 }
 
-.taskRow > *:nth-child(3) {
-    flex-grow: 10;
+.taskRow > .properties > *:nth-child(1) {
+    margin-left: 0px;
 }
 
 .subtasks {
     margin-left: 30px;
+}
+
+.addField {
+    display: flex;
+    margin-left: 25px;
+    margin-bottom: 10px;
+}
+
+input.newTaskTitle {
+    flex-grow: 1;
+}
+
+.hidden {
+    display: none;
 }

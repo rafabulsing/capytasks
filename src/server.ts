@@ -28,9 +28,10 @@ app.get('/tasks', async (req, res) => {
 	return res.status(200).send(tasks);
 });
 
-app.post('/task', jsonParser, async (req, res) => {
-    const { parentPath, taskProperties } = req.body;
-    await taskService.createTask(parentPath, taskProperties);
+app.post('/task/*', jsonParser, async (req, res) => {
+    const path = req.params[0].split('/');
+    const taskProperties = req.body;
+    await taskService.createTask(path, taskProperties);
 	return res.status(200).send();
 });
 

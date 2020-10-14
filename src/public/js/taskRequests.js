@@ -27,9 +27,9 @@ const getTasks = (callback) => {
     xhr.send();
 };
 
-const createTask = (title, dueDate, callback) => {
+const createTask = (path, title, dueDate, callback) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/task', true);
+    xhr.open('POST', `/task/${ path }`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     
     xhr.addEventListener('load', () => {
@@ -39,11 +39,8 @@ const createTask = (title, dueDate, callback) => {
     });
 
     const body = JSON.stringify({
-        parentPath: [],
-        taskProperties: {
-            title,
-            dueDate,
-        }
+        title,
+        dueDate,
     });
     xhr.send(body);
 };
