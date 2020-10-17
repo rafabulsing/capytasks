@@ -37,11 +37,17 @@ app.post('/task/*', jsonParser, async (req, res) => {
 
 app.patch('/task/*', jsonParser, async (req, res) => {
     const path = req.params[0].split('/');
-    const data = {
-        ...req.body,
+    const { operation, taskProperties } = req.body;
+
+    if (operation === 'update') {
+        await taskService.updateTask(path, taskProperties);
+        return res.status(200).send('Task updated.');
     }
-    await taskService.updateTask(path, data);
-    return res.status(200).send('Task updated.');
+
+    if (operation === 'finish') {
+        await taskService.finishTask(path);
+        return res.status(200).send('Task finished.');
+    }
 });
 
 app.delete('/task/*', async (req, res) => {

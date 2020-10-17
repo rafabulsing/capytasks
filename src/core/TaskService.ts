@@ -28,4 +28,8 @@ export class TaskService {
     async deleteTask(path: string[]) {
         await this.repository.deleteTask(path);
     }
+
+    async finishTask(path: string[]) {
+        await this.repository.deleteTask(path);
+    }
 };

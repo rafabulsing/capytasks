@@ -10,7 +10,8 @@ const setTaskCompleted = (path, completed, callback) => {
     });
 
     const body = JSON.stringify({
-        completed,
+        operation: 'update',
+        taskProperties: { completed },
     });
     xhr.send(body);
 };
@@ -59,9 +60,28 @@ const deleteTask = (path, callback) => {
     xhr.send();
 };
 
+const finishTask = (path, callback) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('PATCH', `/task/${ path }`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    
+    xhr.addEventListener('load', () => {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            callback();
+        }
+    });
+    
+    const body = JSON.stringify({
+        operation: 'finish',
+    });
+
+    xhr.send(body);
+};
+
 module.exports = {
     setTaskCompleted,
     getTasks,
     createTask,
     deleteTask,
+    finishTask,
 };

@@ -11,8 +11,24 @@ const addHandlers = () => {
     taskRows.forEach((taskRow) => {
         const checkbox = taskRow.querySelector('input');
         const path = taskRow.attributes.path.nodeValue;
-        checkbox.addEventListener('change', () => {
-            taskRequests.setTaskCompleted(path, checkbox.checked, loadTasks); 
+        // checkbox.addEventListener('change', (e) => {
+        //     taskRequests.setTaskCompleted(path, checkbox.checked, loadTasks); 
+        // });
+        checkbox.addEventListener('click', (e) => {
+            if (e.ctrlKey) {
+                taskRequests.finishTask(path, loadTasks);
+            } else {
+                taskRequests.setTaskCompleted(path, checkbox.checked, loadTasks);
+            }
+        });
+        checkbox.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                if (e.ctrlKey) {
+                    taskRequests.finishTask(path, loadTasks);
+                } else {
+                    taskRequests.setTaskCompleted(path, !checkbox.checked, loadTasks);
+                }
+            }
         });
 
         const deleteBtn = taskRow.querySelector('.deleteBtn');
